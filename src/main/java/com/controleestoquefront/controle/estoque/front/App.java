@@ -10,6 +10,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        // precisa rodar com mvn clean javafx:run
+        
         Button btn = new Button("Hello JavaFX with Maven!");
         btn.setOnAction(e -> System.out.println("Hello world!"));
 
@@ -17,7 +19,7 @@ public class App extends Application {
         root.getChildren().add(btn);
 
         Scene scene = new Scene(root, 400, 300);
-        primaryStage.setTitle("JavaFX Maven Demo");
+        primaryStage.setTitle("JavaFX Hello world");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
