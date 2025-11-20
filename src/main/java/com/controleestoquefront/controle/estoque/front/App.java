@@ -10,7 +10,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/layout.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/TelaInicial.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Controle de Estoque");
         primaryStage.setScene(scene);
