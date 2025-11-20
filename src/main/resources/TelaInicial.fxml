@@ -14,16 +14,16 @@
    <children>
       <BorderPane layoutX="75.0" layoutY="149.0" prefHeight="239.0" prefWidth="627.0">
          <center>
-            <TableView fx:id="tblDetalhes" prefHeight="239.0" prefWidth="570.0" style="-fx-background-color: #708090; -fx-background-radius: 8; -fx-border-color: Black; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
+            <TableView fx:id="tblDetalhes" prefHeight="239.0" prefWidth="646.0" style="-fx-background-color: #708090; -fx-background-radius: 8; -fx-border-color: Black; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn prefWidth="75.0" text="Nome" />
                 <TableColumn fx:id="colStatus" prefWidth="86.40002298355103" text="Preço unitário" />
-                <TableColumn fx:id="colPreco" prefWidth="72.79998779296875" text="Unidade" />
+                <TableColumn fx:id="colPreco" prefWidth="72.79998779296875" text="embalagem" />
                   <TableColumn fx:id="colTipos" prefWidth="122.4000244140625" text="Quantidade .Estoq" />
                   <TableColumn prefWidth="83.19992065429688" text="Min. Estoque" />
                   <TableColumn prefWidth="98.39996337890625" text="Max. Estoque" />
                   <TableColumn minWidth="0.0" prefWidth="0.0" text="Column X" />
-                  <TableColumn prefWidth="87.20001220703125" text="Categoria" />
+                  <TableColumn prefWidth="87.20001220703125" text="tamanho" />
               </columns>
             </TableView>
          </center>
@@ -47,7 +47,7 @@
       </Button>
       <TextField layoutX="480.0" layoutY="119.0" prefHeight="27.0" prefWidth="150.0" text="Pesquisar Produtos..." />
       <ChoiceBox layoutX="75.0" layoutY="120.0" prefHeight="26.0" prefWidth="97.0" />
-      <Label layoutX="194.0" layoutY="73.0" prefHeight="27.0" prefWidth="160.0" text="Todos os produtos">
+      <Label fx:id="labelRelatorioAtual" layoutX="194.0" layoutY="73.0" prefHeight="27.0" prefWidth="160.0" text="Todos os produtos">
          <font>
             <Font size="18.0" />
          </font>
