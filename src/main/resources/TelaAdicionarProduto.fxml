@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="326.0" style="-fx-background-color: #708090;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="326.0" style="-fx-background-color: #708090;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controleestoquefront.controllers.Controller">
    <children>
       <Line endX="163.0" endY="-1.52587890625E-5" layoutX="163.0" layoutY="74.0" startX="-169.09999084472656" startY="-1.52587890625E-5" />
       <Text layoutX="66.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adicionar produto">
