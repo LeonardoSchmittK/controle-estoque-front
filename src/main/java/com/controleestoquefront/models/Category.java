@@ -8,7 +8,7 @@ public class Category {
     private Size size;
     private Packaging packaging;
 
-    // Constructors
+   
     public Category() {}
 
     public Category(Long id, String name, Size size, Packaging packaging) {
@@ -18,7 +18,7 @@ public class Category {
         this.packaging = packaging;
     }
 
-    // Getters and Setters
+   
     public Long getId() {
         return id;
     }

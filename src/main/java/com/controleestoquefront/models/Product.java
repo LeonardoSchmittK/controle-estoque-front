@@ -13,7 +13,8 @@ public class Product {
     private Integer maxQuantity;
     private Category category;
 
-    // Constructors
+   
+    
     public Product() {}
 
     public Product(Long id, String name, BigDecimal unitPrice, String unit,
@@ -29,7 +30,7 @@ public class Product {
         this.category = category;
     }
 
-    // Getters and Setters
+
     public Long getId() {
         return id;
     }

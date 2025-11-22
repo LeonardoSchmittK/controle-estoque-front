@@ -14,7 +14,7 @@ public class Movement {
     private Integer quantity;
     private TypeMovement type;
 
-    // Constructors
+   
     public Movement() {}
 
     public Movement(Long id, Product product, LocalDateTime date, Integer quantity, TypeMovement type) {
@@ -25,7 +25,7 @@ public class Movement {
         this.type = type;
     }
 
-    // Getters and Setters
+    
     public Long getId() {
         return id;
     }
