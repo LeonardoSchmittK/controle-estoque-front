@@ -8,38 +8,23 @@ function CreateProduct() {
     descricao: '',
     preco: '',
     quantidade: '',
-    categoria: '',
-    tamanho: '',
-    embalagem: ''
+    categoria: ''
   })
   const [errors, setErrors] = useState({})
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-    // Limpar erro do campo quando o usuário começa a digitar
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: undefined
-      }))
-    }
+    setFormData(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }))
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    // Validação simples
     const newErrors = {}
-    if (!formData.nome) newErrors.nome = 'Campo obrigatório'
+    if (!formData.nome.trim()) newErrors.nome = 'Campo obrigatório'
     if (!formData.preco) newErrors.preco = 'Campo obrigatório'
     if (!formData.quantidade) newErrors.quantidade = 'Campo obrigatório'
     if (!formData.categoria) newErrors.categoria = 'Campo obrigatório'
-    if (!formData.tamanho) newErrors.tamanho = 'Campo obrigatório'
-    if (!formData.embalagem) newErrors.embalagem = 'Campo obrigatório'
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -61,6 +46,8 @@ function CreateProduct() {
 
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
+
+            {/* Nome do Produto */}
             <div>
               <label htmlFor="nome" className="block text-sm font-medium text-purple-200 mb-2">
                 Nome do Produto *
@@ -77,6 +64,7 @@ function CreateProduct() {
               {errors.nome && <p className="text-red-400 text-sm mt-1">{errors.nome}</p>}
             </div>
 
+            {/* Descrição */}
             <div>
               <label htmlFor="descricao" className="block text-sm font-medium text-purple-200 mb-2">
                 Descrição
@@ -87,48 +75,49 @@ function CreateProduct() {
                 value={formData.descricao}
                 onChange={handleChange}
                 rows="3"
-                className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 bg-slate-800 border rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                 placeholder="Descreva o produto..."
               />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="preco" className="block text-sm font-medium text-purple-200 mb-2">
-                  Preço (R$) *
-                </label>
-                <input
-                  type="number"
-                  id="preco"
-                  name="preco"
-                  step="0.01"
-                  min="0"
-                  value={formData.preco}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-slate-800 border rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${errors.preco ? 'border-red-500' : 'border-white/20'}`}
-                  placeholder="0.00"
-                />
-                {errors.preco && <p className="text-red-400 text-sm mt-1">{errors.preco}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="quantidade" className="block text-sm font-medium text-purple-200 mb-2">
-                  Quantidade *
-                </label>
-                <input
-                  type="number"
-                  id="quantidade"
-                  name="quantidade"
-                  min="0"
-                  value={formData.quantidade}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-slate-800 border rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${errors.quantidade ? 'border-red-500' : 'border-white/20'}`}
-                  placeholder="0"
-                />
-                {errors.quantidade && <p className="text-red-400 text-sm mt-1">{errors.quantidade}</p>}
-              </div>
+            {/* Preço */}
+            <div>
+              <label htmlFor="preco" className="block text-sm font-medium text-purple-200 mb-2">
+                Preço (R$) *
+              </label>
+              <input
+                type="number"
+                id="preco"
+                name="preco"
+                step="0.01"
+                min="0"
+                value={formData.preco}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 bg-slate-800 border rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${errors.preco ? 'border-red-500' : 'border-white/20'}`}
+                placeholder="0.00"
+              />
+              {errors.preco && <p className="text-red-400 text-sm mt-1">{errors.preco}</p>}
             </div>
 
+            {/* Quantidade */}
+            <div>
+              <label htmlFor="quantidade" className="block text-sm font-medium text-purple-200 mb-2">
+                Quantidade *
+              </label>
+              <input
+                type="number"
+                id="quantidade"
+                name="quantidade"
+                min="0"
+                value={formData.quantidade}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 bg-slate-800 border rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${errors.quantidade ? 'border-red-500' : 'border-white/20'}`}
+                placeholder="0"
+              />
+              {errors.quantidade && <p className="text-red-400 text-sm mt-1">{errors.quantidade}</p>}
+            </div>
+
+            {/* Categoria */}
             <div>
               <label htmlFor="categoria" className="block text-sm font-medium text-purple-200 mb-2">
                 Categoria *
@@ -149,46 +138,7 @@ function CreateProduct() {
               {errors.categoria && <p className="text-red-400 text-sm mt-1">{errors.categoria}</p>}
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="tamanho" className="block text-sm font-medium text-purple-200 mb-2">
-                  Tamanho *
-                </label>
-                <select
-                  id="tamanho"
-                  name="tamanho"
-                  value={formData.tamanho}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-slate-800 border rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${errors.tamanho ? 'border-red-500' : 'border-white/20'}`}
-                >
-                  <option value="">Selecione o tamanho</option>
-                  <option value="pequeno">Pequeno</option>
-                  <option value="medio">Médio</option>
-                  <option value="grande">Grande</option>
-                </select>
-                {errors.tamanho && <p className="text-red-400 text-sm mt-1">{errors.tamanho}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="embalagem" className="block text-sm font-medium text-purple-200 mb-2">
-                  Embalagem *
-                </label>
-                <select
-                  id="embalagem"
-                  name="embalagem"
-                  value={formData.embalagem}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-slate-800 border rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${errors.embalagem ? 'border-red-500' : 'border-white/20'}`}
-                >
-                  <option value="">Selecione a embalagem</option>
-                  <option value="lata">Lata</option>
-                  <option value="vidro">Vidro</option>
-                  <option value="plastico">Plástico</option>
-                </select>
-                {errors.embalagem && <p className="text-red-400 text-sm mt-1">{errors.embalagem}</p>}
-              </div>
-            </div>
-
+            {/* Botão centralizado */}
             <div className="pt-4 text-center">
               <button
                 type="submit"
@@ -197,6 +147,7 @@ function CreateProduct() {
                 Criar Produto
               </button>
             </div>
+
           </form>
         </div>
       </div>
