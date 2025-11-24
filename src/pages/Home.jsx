@@ -146,6 +146,7 @@ function Home() {
           >
             <option value="list">Lista de Produtos (Ordem Alfabética)</option>
             <option value="balance">Balanço Físico/Financeiro</option>
+            <option value="lowStock">Produtos Abaixo da Quantidade Mínima</option>
           </select>
         </div>
 
@@ -338,7 +339,7 @@ function Home() {
                   </div>
                 )}
               </>
-            ) : (
+            ) : reportType === 'balance' ? (
               <>
                 {/* Balance Report */}
                 {products.length === 0 ? (
@@ -490,6 +491,144 @@ function Home() {
                               </td>
                             </tr>
                           </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {/* Low Stock Report */}
+                {/* Search Bar for Low Stock Report */}
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
+                  <label htmlFor="lowStockSearch" className="block text-sm font-medium text-purple-200 mb-2">
+                    🔍 Pesquisar
+                  </label>
+                  <input
+                    type="text"
+                    id="lowStockSearch"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Pesquisar por produto, quantidade..."
+                    className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                  <div className="mt-4 text-purple-200 text-sm">
+                    Mostrando {sortedProducts.filter(p => isLowStock(p)).length} produtos abaixo da quantidade mínima
+                  </div>
+                </div>
+
+                {sortedProducts.filter(p => isLowStock(p)).length === 0 ? (
+                  <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
+                    <p className="text-2xl text-purple-200 mb-4">
+                      {products.length === 0 ? '📦 Nenhum produto cadastrado' : '✅ Nenhum produto abaixo da quantidade mínima'}
+                    </p>
+                    {products.length === 0 && (
+                      <Link
+                        to="/create-product"
+                        className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
+                      >
+                        Criar Primeiro Produto
+                      </Link>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    {/* Alert Card */}
+                    <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-lg rounded-2xl p-6 border border-red-400/30 shadow-2xl mb-6">
+                      <div className="flex items-center gap-3">
+                        <span className="text-4xl">⚠️</span>
+                        <div>
+                          <h3 className="text-white text-xl font-bold">Atenção: Estoque Baixo</h3>
+                          <p className="text-red-200">
+                            {sortedProducts.filter(p => isLowStock(p)).length} produto(s) abaixo da quantidade mínima necessitam reposição
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Low Stock Table */}
+                    <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-white/5">
+                            <tr>
+                              <th 
+                                onClick={() => handleSort('name')}
+                                className="px-6 py-4 text-left text-sm font-semibold text-purple-200 cursor-pointer hover:bg-white/10 transition-colors"
+                              >
+                                <div className="flex items-center gap-2">
+                                  Produto
+                                  {sortColumn === 'name' && (
+                                    <span>{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                                  )}
+                                </div>
+                              </th>
+                              <th 
+                                onClick={() => handleSort('category')}
+                                className="px-6 py-4 text-left text-sm font-semibold text-purple-200 cursor-pointer hover:bg-white/10 transition-colors"
+                              >
+                                <div className="flex items-center gap-2">
+                                  Categoria
+                                  {sortColumn === 'category' && (
+                                    <span>{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                                  )}
+                                </div>
+                              </th>
+                              <th 
+                                onClick={() => handleSort('minQuantity')}
+                                className="px-6 py-4 text-right text-sm font-semibold text-purple-200 cursor-pointer hover:bg-white/10 transition-colors"
+                              >
+                                <div className="flex items-center justify-end gap-2">
+                                  Qtd. Mínima
+                                  {sortColumn === 'minQuantity' && (
+                                    <span>{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                                  )}
+                                </div>
+                              </th>
+                              <th 
+                                onClick={() => handleSort('quantity')}
+                                className="px-6 py-4 text-right text-sm font-semibold text-purple-200 cursor-pointer hover:bg-white/10 transition-colors"
+                              >
+                                <div className="flex items-center justify-end gap-2">
+                                  Qtd. em Estoque
+                                  {sortColumn === 'quantity' && (
+                                    <span>{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                                  )}
+                                </div>
+                              </th>
+                              <th className="px-6 py-4 text-right text-sm font-semibold text-purple-200">
+                                Diferença
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-white/10">
+                            {sortedProducts.filter(p => isLowStock(p)).map(product => {
+                              const difference = product.quantityInStock - product.minQuantity
+                              return (
+                                <tr key={product.id} className="hover:bg-white/5 transition-colors bg-red-500/10">
+                                  <td className="px-6 py-4 text-white font-medium">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-red-400">⚠️</span>
+                                      {product.name}
+                                    </div>
+                                  </td>
+                                  <td className="px-6 py-4 text-purple-200">
+                                    {getCategoryName(product.categoryId)}
+                                  </td>
+                                  <td className="px-6 py-4 text-purple-200 text-right">
+                                    {product.minQuantity} {product.unit}
+                                  </td>
+                                  <td className="px-6 py-4 text-red-400 font-semibold text-right">
+                                    {product.quantityInStock} {product.unit}
+                                  </td>
+                                  <td className="px-6 py-4 text-red-400 font-bold text-right">
+                                    {difference} {product.unit}
+                                  </td>
+                                </tr>
+                              )
+                            })}
+                          </tbody>
                         </table>
                       </div>
                     </div>
