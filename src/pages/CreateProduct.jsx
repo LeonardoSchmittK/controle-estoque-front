@@ -1,8 +1,18 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { z } from "zod"
+
+const ProductSchema = z.object({
+  nome: z.string().min(1, "Campo obrigatório"),
+  descricao: z.string().optional(),
+  preco: z.string().min(1, "Campo obrigatório"),
+  quantidade: z.string().min(1, "Campo obrigatório"),
+  categoria: z.string().min(1, "Campo obrigatório")
+})
 
 function CreateProduct() {
   const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
     nome: '',
     descricao: '',
@@ -10,6 +20,7 @@ function CreateProduct() {
     quantidade: '',
     categoria: ''
   })
+
   const [errors, setErrors] = useState({})
 
   const handleChange = (e) => {
@@ -20,18 +31,19 @@ function CreateProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const newErrors = {}
-    if (!formData.nome.trim()) newErrors.nome = 'Campo obrigatório'
-    if (!formData.preco) newErrors.preco = 'Campo obrigatório'
-    if (!formData.quantidade) newErrors.quantidade = 'Campo obrigatório'
-    if (!formData.categoria) newErrors.categoria = 'Campo obrigatório'
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
+    const result = ProductSchema.safeParse(formData)
+
+    if (!result.success) {
+      const formatted = {}
+      result.error.errors.forEach(err => {
+        formatted[err.path[0]] = err.message
+      })
+      setErrors(formatted)
       return
     }
 
-    console.log("Produto criado:", formData)
+    console.log("Produto criado:", result.data)
     alert("Produto criado com sucesso!")
     navigate("/")
   }
@@ -47,7 +59,6 @@ function CreateProduct() {
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
 
-            {/* Nome do Produto */}
             <div>
               <label htmlFor="nome" className="block text-sm font-medium text-purple-200 mb-2">
                 Nome do Produto *
@@ -64,7 +75,6 @@ function CreateProduct() {
               {errors.nome && <p className="text-red-400 text-sm mt-1">{errors.nome}</p>}
             </div>
 
-            {/* Descrição */}
             <div>
               <label htmlFor="descricao" className="block text-sm font-medium text-purple-200 mb-2">
                 Descrição
@@ -80,7 +90,6 @@ function CreateProduct() {
               />
             </div>
 
-            {/* Preço */}
             <div>
               <label htmlFor="preco" className="block text-sm font-medium text-purple-200 mb-2">
                 Preço (R$) *
@@ -99,7 +108,6 @@ function CreateProduct() {
               {errors.preco && <p className="text-red-400 text-sm mt-1">{errors.preco}</p>}
             </div>
 
-            {/* Quantidade */}
             <div>
               <label htmlFor="quantidade" className="block text-sm font-medium text-purple-200 mb-2">
                 Quantidade *
@@ -117,7 +125,6 @@ function CreateProduct() {
               {errors.quantidade && <p className="text-red-400 text-sm mt-1">{errors.quantidade}</p>}
             </div>
 
-            {/* Categoria */}
             <div>
               <label htmlFor="categoria" className="block text-sm font-medium text-purple-200 mb-2">
                 Categoria *
@@ -138,7 +145,6 @@ function CreateProduct() {
               {errors.categoria && <p className="text-red-400 text-sm mt-1">{errors.categoria}</p>}
             </div>
 
-            {/* Botão centralizado */}
             <div className="pt-4 text-center">
               <button
                 type="submit"

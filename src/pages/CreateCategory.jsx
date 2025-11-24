@@ -1,18 +1,32 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { z } from "zod"
+
+const CategorySchema = z.object({
+  nome: z.string().min(1, "Campo obrigatório"),
+  tamanho: z.enum(["pequeno", "medio", "grande"], {
+    errorMap: () => ({ message: "Campo obrigatório" })
+  }),
+  embalagem: z.enum(["lata", "vidro", "plastico"], {
+    errorMap: () => ({ message: "Campo obrigatório" })
+  })
+})
 
 function CreateCategory() {
   const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
     nome: '',
     tamanho: '',
     embalagem: ''
   })
+
   const [errors, setErrors] = useState({})
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }))
     }
@@ -20,17 +34,19 @@ function CreateCategory() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const newErrors = {}
-    if (!formData.nome.trim()) newErrors.nome = 'Campo obrigatório'
-    if (!formData.tamanho) newErrors.tamanho = 'Campo obrigatório'
-    if (!formData.embalagem) newErrors.embalagem = 'Campo obrigatório'
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
+    const result = CategorySchema.safeParse(formData)
+
+    if (!result.success) {
+      const formattedErrors = {}
+      result.error.errors.forEach(err => {
+        formattedErrors[err.path[0]] = err.message
+      })
+      setErrors(formattedErrors)
       return
     }
 
-    console.log("Categoria criada:", formData)
+    console.log("Categoria criada:", result.data)
     alert("Categoria criada com sucesso!")
     navigate("/")
   }
@@ -45,8 +61,7 @@ function CreateCategory() {
 
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
-
-            {/* Nome da Categoria */}
+            
             <div>
               <label htmlFor="nome" className="block text-sm font-medium text-purple-200 mb-2">
                 Nome da Categoria *
@@ -63,7 +78,6 @@ function CreateCategory() {
               {errors.nome && <p className="text-red-400 text-sm mt-1">{errors.nome}</p>}
             </div>
 
-            {/* Tamanho */}
             <div>
               <label htmlFor="tamanho" className="block text-sm font-medium text-purple-200 mb-2">
                 Tamanho *
@@ -83,7 +97,6 @@ function CreateCategory() {
               {errors.tamanho && <p className="text-red-400 text-sm mt-1">{errors.tamanho}</p>}
             </div>
 
-            {/* Embalagem */}
             <div>
               <label htmlFor="embalagem" className="block text-sm font-medium text-purple-200 mb-2">
                 Embalagem *
@@ -103,7 +116,6 @@ function CreateCategory() {
               {errors.embalagem && <p className="text-red-400 text-sm mt-1">{errors.embalagem}</p>}
             </div>
 
-            {/* Botão centralizado */}
             <div className="pt-4 text-center">
               <button
                 type="submit"
