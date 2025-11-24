@@ -51,6 +51,16 @@ function Navbar() {
             >
               Criar Categoria
             </Link>
+            <Link
+              to="/movimentacoes"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                isActive('/movimentacoes')
+                  ? 'bg-purple-500 text-white'
+                  : 'text-purple-200 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              Movimentações
+            </Link>
           </div>
         </div>
       </div>
