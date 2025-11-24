@@ -908,7 +908,7 @@ function Home() {
                                 const productEntries = {}
                                 
                                 entryMovements.forEach(m => {
-                                  const product = products.find(p => p.id === m.product.id)
+                                  const product = products.find(p => p.id === m.productId)
                                   if (product) {
                                     if (selectedCategory === '' || product.categoryId === parseInt(selectedCategory)) {
                                       if (!productEntries[product.id]) {
@@ -966,7 +966,7 @@ function Home() {
                                 const productExits = {}
                                 
                                 exitMovements.forEach(m => {
-                                  const product = products.find(p => p.id === m.product.id)
+                                  const product = products.find(p => p.id === m.productId)
                                   if (product) {
                                     if (selectedCategory === '' || product.categoryId === parseInt(selectedCategory)) {
                                       if (!productExits[product.id]) {
