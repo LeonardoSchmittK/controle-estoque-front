@@ -4,30 +4,34 @@ import { Link } from 'react-router-dom'
 function Home() {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
+  const [movements, setMovements] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [sortColumn, setSortColumn] = useState('name')
   const [sortDirection, setSortDirection] = useState('asc')
-  const [reportType, setReportType] = useState('list') // 'list' or 'balance'
+  const [reportType, setReportType] = useState('list') // 'list', 'balance', 'lowStock', 'byCategory', 'ranking'
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsRes, categoriesRes] = await Promise.all([
+        const [productsRes, categoriesRes, movementsRes] = await Promise.all([
           fetch(`${import.meta.env.VITE_BACK_END_API}/api/products`),
-          fetch(`${import.meta.env.VITE_BACK_END_API}/api/categories`)
+          fetch(`${import.meta.env.VITE_BACK_END_API}/api/categories`),
+          fetch(`${import.meta.env.VITE_BACK_END_API}/api/movements`)
         ])
 
-        if (!productsRes.ok || !categoriesRes.ok) {
+        if (!productsRes.ok || !categoriesRes.ok || !movementsRes.ok) {
           throw new Error('Erro ao buscar dados')
         }
 
         const productsData = await productsRes.json()
         const categoriesData = await categoriesRes.json()
+        const movementsData = await movementsRes.json()
 
         setProducts(productsData)
         setCategories(categoriesData)
+        setMovements(movementsData)
       } catch (error) {
         console.error("Erro ao buscar dados:", error)
         alert("Erro ao carregar dados. Verifique se o backend está rodando.")
@@ -148,6 +152,7 @@ function Home() {
             <option value="balance">Balanço Físico/Financeiro</option>
             <option value="lowStock">Produtos Abaixo da Quantidade Mínima</option>
             <option value="byCategory">Quantidade de Produtos por Categoria</option>
+            <option value="ranking">Ranking de Entradas e Saídas</option>
           </select>
         </div>
 
@@ -636,7 +641,7 @@ function Home() {
                   </>
                 )}
               </>
-            ) : (
+            ) : reportType === 'byCategory' ? (
               <>
                 {/* Products by Category Report */}
                 {/* Search Bar for Category Report */}
@@ -805,6 +810,195 @@ function Home() {
                             </tr>
                           </tfoot>
                         </table>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {/* Ranking Report */}
+                {/* Search and Filter Bar */}
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="rankingSearch" className="block text-sm font-medium text-purple-200 mb-2">
+                        🔍 Pesquisar
+                      </label>
+                      <input
+                        type="text"
+                        id="rankingSearch"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Pesquisar por produto..."
+                        className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="rankingCategory" className="block text-sm font-medium text-purple-200 mb-2">
+                        📦 Filtrar por Categoria
+                      </label>
+                      <select
+                        id="rankingCategory"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      >
+                        <option value="">Ranking Geral</option>
+                        {categories.map(category => (
+                          <option key={category.id} value={category.id}>
+                            {category.name} ({category.size} - {category.packaging})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {movements.length === 0 ? (
+                  <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
+                    <p className="text-2xl text-purple-200 mb-4">
+                      📊 Nenhuma movimentação registrada
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Summary Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                      <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="text-purple-200 text-sm mb-2">Total de Entradas</div>
+                        <div className="text-white text-3xl font-bold">
+                          {movements.filter(m => m.movementType === 'ENTRY').reduce((sum, m) => sum + m.quantityMoved, 0)}
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-br from-red-500/20 to-orange-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="text-purple-200 text-sm mb-2">Total de Saídas</div>
+                        <div className="text-white text-3xl font-bold">
+                          {movements.filter(m => m.movementType === 'EXIT').reduce((sum, m) => sum + m.quantityMoved, 0)}
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="text-purple-200 text-sm mb-2">Total de Movimentações</div>
+                        <div className="text-white text-3xl font-bold">{movements.length}</div>
+                      </div>
+                    </div>
+
+                    {/* Rankings Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      {/* Top Entries Ranking */}
+                      <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
+                        <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 px-6 py-4 border-b border-white/20">
+                          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                            📈 Ranking de Entradas
+                            {selectedCategory && <span className="text-sm text-purple-200">({categories.find(c => c.id === parseInt(selectedCategory))?.name})</span>}
+                          </h3>
+                        </div>
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead className="bg-white/5">
+                              <tr>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-purple-200">#</th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-purple-200">Produto</th>
+                                <th className="px-6 py-3 text-right text-sm font-semibold text-purple-200">Qtd. Total</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/10">
+                              {(() => {
+                                const entryMovements = movements.filter(m => m.movementType === 'ENTRY')
+                                const productEntries = {}
+                                
+                                entryMovements.forEach(m => {
+                                  const product = products.find(p => p.id === m.product.id)
+                                  if (product) {
+                                    if (selectedCategory === '' || product.categoryId === parseInt(selectedCategory)) {
+                                      if (!productEntries[product.id]) {
+                                        productEntries[product.id] = { product, total: 0 }
+                                      }
+                                      productEntries[product.id].total += m.quantityMoved
+                                    }
+                                  }
+                                })
+                                
+                                return Object.values(productEntries)
+                                  .filter(entry => {
+                                    if (searchTerm === '') return true
+                                    return entry.product.name.toLowerCase().includes(searchTerm.toLowerCase())
+                                  })
+                                  .sort((a, b) => b.total - a.total)
+                                  .slice(0, 10)
+                                  .map((entry, index) => (
+                                    <tr key={entry.product.id} className="hover:bg-white/5 transition-colors">
+                                      <td className="px-6 py-3 text-white font-bold">
+                                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}º`}
+                                      </td>
+                                      <td className="px-6 py-3 text-white font-medium">{entry.product.name}</td>
+                                      <td className="px-6 py-3 text-green-400 font-bold text-right">
+                                        +{entry.total}
+                                      </td>
+                                    </tr>
+                                  ))
+                              })()}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      {/* Top Exits Ranking */}
+                      <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
+                        <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 px-6 py-4 border-b border-white/20">
+                          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                            📉 Ranking de Saídas
+                            {selectedCategory && <span className="text-sm text-purple-200">({categories.find(c => c.id === parseInt(selectedCategory))?.name})</span>}
+                          </h3>
+                        </div>
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead className="bg-white/5">
+                              <tr>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-purple-200">#</th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-purple-200">Produto</th>
+                                <th className="px-6 py-3 text-right text-sm font-semibold text-purple-200">Qtd. Total</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/10">
+                              {(() => {
+                                const exitMovements = movements.filter(m => m.movementType === 'EXIT')
+                                const productExits = {}
+                                
+                                exitMovements.forEach(m => {
+                                  const product = products.find(p => p.id === m.product.id)
+                                  if (product) {
+                                    if (selectedCategory === '' || product.categoryId === parseInt(selectedCategory)) {
+                                      if (!productExits[product.id]) {
+                                        productExits[product.id] = { product, total: 0 }
+                                      }
+                                      productExits[product.id].total += m.quantityMoved
+                                    }
+                                  }
+                                })
+                                
+                                return Object.values(productExits)
+                                  .filter(exit => {
+                                    if (searchTerm === '') return true
+                                    return exit.product.name.toLowerCase().includes(searchTerm.toLowerCase())
+                                  })
+                                  .sort((a, b) => b.total - a.total)
+                                  .slice(0, 10)
+                                  .map((exit, index) => (
+                                    <tr key={exit.product.id} className="hover:bg-white/5 transition-colors">
+                                      <td className="px-6 py-3 text-white font-bold">
+                                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}º`}
+                                      </td>
+                                      <td className="px-6 py-3 text-white font-medium">{exit.product.name}</td>
+                                      <td className="px-6 py-3 text-red-400 font-bold text-right">
+                                        -{exit.total}
+                                      </td>
+                                    </tr>
+                                  ))
+                              })()}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
                   </>
