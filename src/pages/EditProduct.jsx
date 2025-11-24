@@ -11,9 +11,9 @@ function EditProduct() {
   
   const [formData, setFormData] = useState({
     name: '',
-    price: '',
+    unitPrice: '',
     unit: '',
-    quantityAvailable: '',
+    quantityInStock: '',
     minQuantity: '',
     maxQuantity: '',
     categoryId: ''
@@ -39,9 +39,9 @@ function EditProduct() {
 
       setFormData({
         name: productData.name,
-        price: productData.price,
+        unitPrice: productData.unitPrice,
         unit: productData.unit,
-        quantityAvailable: productData.quantityAvailable,
+        quantityInStock: productData.quantityInStock,
         minQuantity: productData.minQuantity,
         maxQuantity: productData.maxQuantity,
         categoryId: productData.categoryId
@@ -68,8 +68,8 @@ function EditProduct() {
         },
         body: JSON.stringify({
           ...formData,
-          price: parseFloat(formData.price),
-          quantityAvailable: parseInt(formData.quantityAvailable),
+          unitPrice: parseFloat(formData.unitPrice),
+          quantityInStock: parseInt(formData.quantityInStock),
           minQuantity: parseInt(formData.minQuantity),
           maxQuantity: parseInt(formData.maxQuantity),
           categoryId: parseInt(formData.categoryId)
@@ -157,15 +157,15 @@ function EditProduct() {
             {/* Preço e Unidade */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="price" className="block text-sm font-medium text-purple-200 mb-2">
+                <label htmlFor="unitPrice" className="block text-sm font-medium text-purple-200 mb-2">
                   Preço (R$) *
                 </label>
                 <input
                   type="number"
-                  id="price"
+                  id="unitPrice"
                   step="0.01"
-                  value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                  value={formData.unitPrice}
+                  onChange={(e) => setFormData({ ...formData, unitPrice: e.target.value })}
                   required
                   className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
@@ -189,14 +189,14 @@ function EditProduct() {
             {/* Quantidades */}
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label htmlFor="quantityAvailable" className="block text-sm font-medium text-purple-200 mb-2">
+                <label htmlFor="quantityInStock" className="block text-sm font-medium text-purple-200 mb-2">
                   Qtd. Disponível *
                 </label>
                 <input
                   type="number"
-                  id="quantityAvailable"
-                  value={formData.quantityAvailable}
-                  onChange={(e) => setFormData({ ...formData, quantityAvailable: e.target.value })}
+                  id="quantityInStock"
+                  value={formData.quantityInStock}
+                  onChange={(e) => setFormData({ ...formData, quantityInStock: e.target.value })}
                   required
                   min="0"
                   className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
