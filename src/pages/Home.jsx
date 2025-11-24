@@ -147,6 +147,7 @@ function Home() {
             <option value="list">Lista de Produtos (Ordem Alfabética)</option>
             <option value="balance">Balanço Físico/Financeiro</option>
             <option value="lowStock">Produtos Abaixo da Quantidade Mínima</option>
+            <option value="byCategory">Quantidade de Produtos por Categoria</option>
           </select>
         </div>
 
@@ -497,7 +498,7 @@ function Home() {
                   </>
                 )}
               </>
-            ) : (
+            ) : reportType === 'lowStock' ? (
               <>
                 {/* Low Stock Report */}
                 {/* Search Bar for Low Stock Report */}
@@ -629,6 +630,180 @@ function Home() {
                               )
                             })}
                           </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {/* Products by Category Report */}
+                {/* Search Bar for Category Report */}
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
+                  <label htmlFor="categorySearch" className="block text-sm font-medium text-purple-200 mb-2">
+                    🔍 Pesquisar
+                  </label>
+                  <input
+                    type="text"
+                    id="categorySearch"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Pesquisar por categoria..."
+                    className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+
+                {categories.length === 0 ? (
+                  <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
+                    <p className="text-2xl text-purple-200 mb-4">
+                      📦 Nenhuma categoria cadastrada
+                    </p>
+                    <Link
+                      to="/create-category"
+                      className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
+                    >
+                      Criar Primeira Categoria
+                    </Link>
+                  </div>
+                ) : (
+                  <>
+                    {/* Summary Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                      <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="text-purple-200 text-sm mb-2">Total de Categorias</div>
+                        <div className="text-white text-3xl font-bold">{categories.length}</div>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="text-purple-200 text-sm mb-2">Total de Produtos</div>
+                        <div className="text-white text-3xl font-bold">{products.length}</div>
+                      </div>
+                      <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="text-purple-200 text-sm mb-2">Média por Categoria</div>
+                        <div className="text-white text-3xl font-bold">
+                          {categories.length > 0 ? (products.length / categories.length).toFixed(1) : 0}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Category Table */}
+                    <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-white/5">
+                            <tr>
+                              <th 
+                                onClick={() => handleSort('category')}
+                                className="px-6 py-4 text-left text-sm font-semibold text-purple-200 cursor-pointer hover:bg-white/10 transition-colors"
+                              >
+                                <div className="flex items-center gap-2">
+                                  Categoria
+                                  {sortColumn === 'category' && (
+                                    <span>{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                                  )}
+                                </div>
+                              </th>
+                              <th className="px-6 py-4 text-left text-sm font-semibold text-purple-200">
+                                Tamanho
+                              </th>
+                              <th className="px-6 py-4 text-left text-sm font-semibold text-purple-200">
+                                Embalagem
+                              </th>
+                              <th 
+                                onClick={() => handleSort('quantity')}
+                                className="px-6 py-4 text-right text-sm font-semibold text-purple-200 cursor-pointer hover:bg-white/10 transition-colors"
+                              >
+                                <div className="flex items-center justify-end gap-2">
+                                  Qtd. Produtos Distintos
+                                  {sortColumn === 'quantity' && (
+                                    <span>{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                                  )}
+                                </div>
+                              </th>
+                              <th className="px-6 py-4 text-right text-sm font-semibold text-purple-200">
+                                Total de Itens
+                              </th>
+                              <th className="px-6 py-4 text-right text-sm font-semibold text-purple-200">
+                                Valor Total
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-white/10">
+                            {categories
+                              .filter(category => {
+                                if (searchTerm === '') return true
+                                const searchLower = searchTerm.toLowerCase()
+                                return (
+                                  category.name.toLowerCase().includes(searchLower) ||
+                                  category.size.toLowerCase().includes(searchLower) ||
+                                  category.packaging.toLowerCase().includes(searchLower)
+                                )
+                              })
+                              .sort((a, b) => {
+                                const aProducts = products.filter(p => p.categoryId === a.id)
+                                const bProducts = products.filter(p => p.categoryId === b.id)
+                                
+                                let aValue, bValue
+                                
+                                if (sortColumn === 'category') {
+                                  aValue = a.name.toLowerCase()
+                                  bValue = b.name.toLowerCase()
+                                } else if (sortColumn === 'quantity') {
+                                  aValue = aProducts.length
+                                  bValue = bProducts.length
+                                } else {
+                                  return 0
+                                }
+                                
+                                if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
+                                if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
+                                return 0
+                              })
+                              .map(category => {
+                                const categoryProducts = products.filter(p => p.categoryId === category.id)
+                                const totalItems = categoryProducts.reduce((sum, p) => sum + p.quantityInStock, 0)
+                                const totalValue = categoryProducts.reduce((sum, p) => sum + (p.unitPrice * p.quantityInStock), 0)
+                                
+                                return (
+                                  <tr key={category.id} className="hover:bg-white/5 transition-colors">
+                                    <td className="px-6 py-4 text-white font-medium">
+                                      {category.name}
+                                    </td>
+                                    <td className="px-6 py-4 text-purple-200">
+                                      {category.size}
+                                    </td>
+                                    <td className="px-6 py-4 text-purple-200">
+                                      {category.packaging}
+                                    </td>
+                                    <td className="px-6 py-4 text-white font-semibold text-right">
+                                      {categoryProducts.length}
+                                    </td>
+                                    <td className="px-6 py-4 text-purple-200 text-right">
+                                      {totalItems}
+                                    </td>
+                                    <td className="px-6 py-4 text-purple-200 text-right">
+                                      R$ {totalValue.toFixed(2)}
+                                    </td>
+                                  </tr>
+                                )
+                              })}
+                          </tbody>
+                          <tfoot className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-t-2 border-purple-400">
+                            <tr>
+                              <td colSpan="3" className="px-6 py-4 text-white font-bold text-right">
+                                TOTAIS:
+                              </td>
+                              <td className="px-6 py-4 text-white font-bold text-right">
+                                {products.length}
+                              </td>
+                              <td className="px-6 py-4 text-white font-bold text-right">
+                                {products.reduce((sum, p) => sum + p.quantityInStock, 0)}
+                              </td>
+                              <td className="px-6 py-4 text-white font-bold text-right text-xl">
+                                R$ {products.reduce((sum, p) => sum + (p.unitPrice * p.quantityInStock), 0).toFixed(2)}
+                              </td>
+                            </tr>
+                          </tfoot>
                         </table>
                       </div>
                     </div>
