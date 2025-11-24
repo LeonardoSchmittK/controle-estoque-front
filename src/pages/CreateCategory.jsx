@@ -32,7 +32,7 @@ function CreateCategory() {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const result = CategorySchema.safeParse(formData)
@@ -46,9 +46,35 @@ function CreateCategory() {
       return
     }
 
-    console.log("Categoria criada:", result.data)
-    alert("Categoria criada com sucesso!")
-    navigate("/")
+    try {
+      // Map Portuguese field names to English ones expected by the backend
+      const categoryData = {
+        id: Math.floor(Math.random() * 1000000), // Generate a random ID
+        name: result.data.nome,
+        size: result.data.tamanho,
+        packaging: result.data.embalagem
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_BACK_END_API}/api/categories`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(categoryData)
+      })
+
+      if (!response.ok) {
+        throw new Error('Erro ao criar categoria')
+      }
+
+      const data = await response.json()
+      console.log("Categoria criada:", data)
+      alert("Categoria criada com sucesso!")
+      navigate("/")
+    } catch (error) {
+      console.error("Erro ao criar categoria:", error)
+      alert("Erro ao criar categoria. Tente novamente.")
+    }
   }
 
   return (
