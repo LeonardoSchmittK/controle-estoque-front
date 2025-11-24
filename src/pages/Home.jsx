@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import ConfirmModal from '../components/ConfirmModal'
 
 function Home() {
+  const navigate = useNavigate()
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [movements, setMovements] = useState([])
@@ -11,6 +13,15 @@ function Home() {
   const [sortColumn, setSortColumn] = useState('name')
   const [sortDirection, setSortDirection] = useState('asc')
   const [reportType, setReportType] = useState('list') // 'list', 'balance', 'lowStock', 'byCategory', 'ranking'
+  
+  // Modal state
+  const [deleteModal, setDeleteModal] = useState({
+    isOpen: false,
+    type: '', // 'product' or 'category'
+    id: null,
+    name: '',
+    relatedProducts: 0
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,6 +134,64 @@ function Home() {
     return product.quantityInStock < product.minQuantity
   }
 
+  const isHighStock = (product) => {
+    return product.quantityInStock > product.maxQuantity
+  }
+
+  const handleDeleteProduct = (product) => {
+    setDeleteModal({
+      isOpen: true,
+      type: 'product',
+      id: product.id,
+      name: product.name,
+      relatedProducts: 0
+    })
+  }
+
+  const handleDeleteCategory = (category) => {
+    const relatedProducts = products.filter(p => p.categoryId === category.id).length
+    setDeleteModal({
+      isOpen: true,
+      type: 'category',
+      id: category.id,
+      name: category.name,
+      relatedProducts
+    })
+  }
+
+  const confirmDelete = async () => {
+    try {
+      const endpoint = deleteModal.type === 'product' ? 'products' : 'categories'
+      const response = await fetch(`${import.meta.env.VITE_BACK_END_API}/api/${endpoint}/${deleteModal.id}`, {
+        method: 'DELETE'
+      })
+
+      if (!response.ok) {
+        throw new Error(`Erro ao excluir ${deleteModal.type === 'product' ? 'produto' : 'categoria'}`)
+      }
+
+      // Refresh data
+      const [productsRes, categoriesRes, movementsRes] = await Promise.all([
+        fetch(`${import.meta.env.VITE_BACK_END_API}/api/products`),
+        fetch(`${import.meta.env.VITE_BACK_END_API}/api/categories`),
+        fetch(`${import.meta.env.VITE_BACK_END_API}/api/movements`)
+      ])
+
+      const productsData = await productsRes.json()
+      const categoriesData = await categoriesRes.json()
+      const movementsData = await movementsRes.json()
+
+      setProducts(productsData)
+      setCategories(categoriesData)
+      setMovements(movementsData)
+      
+      setDeleteModal({ isOpen: false, type: '', id: null, name: '', relatedProducts: 0 })
+    } catch (error) {
+      console.error("Erro ao excluir:", error)
+      alert(`Erro ao excluir ${deleteModal.type === 'product' ? 'produto' : 'categoria'}. Tente novamente.`)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
       <div className="container mx-auto max-w-7xl">
@@ -148,7 +217,7 @@ function Home() {
             onChange={(e) => setReportType(e.target.value)}
             className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
-            <option value="list">Lista de Produtos (Ordem Alfabética)</option>
+            <option value="list">Lista de Produtos</option>
             <option value="balance">Balanço Físico/Financeiro</option>
             <option value="lowStock">Produtos Abaixo da Quantidade Mínima</option>
             <option value="byCategory">Quantidade de Produtos por Categoria</option>
@@ -215,7 +284,7 @@ function Home() {
                     </p>
                     {products.length === 0 && (
                       <Link
-                        to="/create-product"
+                        to="/criar-produto"
                         className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
                       >
                         Criar Primeiro Produto
@@ -305,18 +374,27 @@ function Home() {
                                 )}
                               </div>
                             </th>
+                            <th className="px-6 py-4 text-center text-sm font-semibold text-purple-200">
+                              Ações
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-white/10">
                           {sortedProducts.map(product => (
                             <tr 
                               key={product.id} 
-                              className={`hover:bg-white/5 transition-colors ${isLowStock(product) ? 'bg-red-500/10' : ''}`}
+                              className={`hover:bg-white/5 transition-colors ${
+                                isLowStock(product) ? 'bg-red-500/10' : 
+                                isHighStock(product) ? 'bg-orange-500/10' : ''
+                              }`}
                             >
                               <td className="px-6 py-4 text-white font-medium">
                                 {product.name}
                                 {isLowStock(product) && (
                                   <span className="ml-2 text-red-400 text-xs">⚠️ Estoque Baixo</span>
+                                )}
+                                {isHighStock(product) && (
+                                  <span className="ml-2 text-orange-400 text-xs">📈 Estoque Alto</span>
                                 )}
                               </td>
                               <td className="px-6 py-4 text-purple-200">
@@ -325,7 +403,10 @@ function Home() {
                               <td className="px-6 py-4 text-purple-200">
                                 {product.unit}
                               </td>
-                              <td className={`px-6 py-4 font-semibold ${isLowStock(product) ? 'text-red-400' : 'text-purple-200'}`}>
+                              <td className={`px-6 py-4 font-semibold ${
+                                isLowStock(product) ? 'text-red-400' : 
+                                isHighStock(product) ? 'text-orange-400' : 'text-purple-200'
+                              }`}>
                                 {product.quantityInStock}
                               </td>
                               <td className="px-6 py-4 text-purple-200">
@@ -336,6 +417,24 @@ function Home() {
                               </td>
                               <td className="px-6 py-4 text-purple-200">
                                 {getCategoryName(product.categoryId)}
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex items-center justify-center gap-2">
+                                  <button
+                                    onClick={() => navigate(`/editar-produto/${product.id}`)}
+                                    className="px-3 py-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 rounded-lg transition-all text-sm font-medium"
+                                    title="Editar produto"
+                                  >
+                                    ✏️ Editar
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteProduct(product)}
+                                    className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg transition-all text-sm font-medium"
+                                    title="Excluir produto"
+                                  >
+                                    🗑️ Excluir
+                                  </button>
+                                </div>
                               </td>
                             </tr>
                           ))}
@@ -354,7 +453,7 @@ function Home() {
                       📦 Nenhum produto cadastrado
                     </p>
                     <Link
-                      to="/create-product"
+                      to="/criar-produto"
                       className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
                     >
                       Criar Primeiro Produto
@@ -531,7 +630,7 @@ function Home() {
                     </p>
                     {products.length === 0 && (
                       <Link
-                        to="/create-product"
+                        to="/criar-produto"
                         className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
                       >
                         Criar Primeiro Produto
@@ -665,7 +764,7 @@ function Home() {
                       📦 Nenhuma categoria cadastrada
                     </p>
                     <Link
-                      to="/create-category"
+                      to="/criar-categoria"
                       className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
                     >
                       Criar Primeira Categoria
@@ -1008,6 +1107,22 @@ function Home() {
           </>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, type: '', id: null, name: '', relatedProducts: 0 })}
+        onConfirm={confirmDelete}
+        title={`Excluir ${deleteModal.type === 'product' ? 'Produto' : 'Categoria'}?`}
+        message={
+          deleteModal.type === 'category' && deleteModal.relatedProducts > 0
+            ? `Tem certeza que deseja excluir a categoria "${deleteModal.name}"?\n\n⚠️ ATENÇÃO: Esta ação irá excluir:\n• ${deleteModal.relatedProducts} produto(s) relacionado(s)\n• Todas as movimentações desses produtos\n\nEsta ação não pode ser desfeita!`
+            : `Tem certeza que deseja excluir "${deleteModal.name}"?\n\nEsta ação não pode ser desfeita!`
+        }
+        type="danger"
+        confirmText="Sim, Excluir"
+        cancelText="Cancelar"
+      />
     </div>
   )
 }

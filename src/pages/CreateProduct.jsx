@@ -122,7 +122,7 @@ function CreateProduct() {
               <p className="mb-4">⚠️ Nenhuma categoria encontrada!</p>
               <p className="text-sm">Você precisa criar pelo menos uma categoria antes de adicionar produtos.</p>
               <button
-                onClick={() => navigate('/create-category')}
+                onClick={() => navigate('/criar-categoria')}
                 className="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-2 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
               >
                 Criar Categoria
