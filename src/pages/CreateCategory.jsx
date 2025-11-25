@@ -61,6 +61,7 @@ function CreateCategory() {
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(categoryData)
       })
 
       if (!response.ok) {

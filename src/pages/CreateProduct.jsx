@@ -59,52 +59,56 @@ function CreateProduct() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault();
 
-    const result = ProductSchema.safeParse(formData)
+  const result = ProductSchema.safeParse(formData);
 
-    if (!result.success) {
-      const formatted = {}
-      result.error?.errors?.forEach(err => {
-        formatted[err.path[0]] = err.message
-      })
-      setErrors(formatted)
-      return
-    }
-
-    try {
-     
-      const productData = {
-        name: result.data.nome,
-        unitPrice: parseFloat(result.data.preco),
-        unit: result.data.unidade,
-        quantityInStock: parseInt(result.data.quantidadeEstoque),
-        minQuantity: parseInt(result.data.quantidadeMinima),
-        maxQuantity: parseInt(result.data.quantidadeMaxima),
-        categoryId: parseInt(result.data.categoriaId)
-      }
-
-      const response = await fetch(`${import.meta.env.VITE_BACK_END_API}/api/products`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productData)
-      })
-
-      if (!response.ok) {
-        throw new Error('Erro ao criar produto')
-      }
-
-      const data = await response.json()
-      console.log("Produto criado:", data)
-      toast.success("Produto criado!");
-      navigate("/")
-    } catch (error) {
-      console.error("Erro ao criar produto:", error)
-      toast.error("Erro ao criar produto!");
-    }
+  if (!result.success) {
+    const formatted = {};
+    result.error?.errors?.forEach(err => {
+      formatted[err.path[0]] = err.message;
+    });
+    setErrors(formatted);
+    return;
   }
+
+  const min = parseInt(result.data.quantidadeMinima);
+  const max = parseInt(result.data.quantidadeMaxima);
+
+  if (max < min) {
+    toast.error("A quantidade máxima não pode ser menor que a mínima!");
+    return;
+  }
+
+  try {
+    const productData = {
+      name: result.data.nome,
+      unitPrice: parseFloat(result.data.preco),
+      unit: result.data.unidade,
+      quantityInStock: parseInt(result.data.quantidadeEstoque),
+      minQuantity: min,
+      maxQuantity: max,
+      categoryId: parseInt(result.data.categoriaId)
+    };
+
+    const response = await fetch(`${import.meta.env.VITE_BACK_END_API}/api/products`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(productData)
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao criar produto");
+    }
+
+    toast.success("Produto criado!");
+    navigate("/");
+  } catch (error) {
+    console.error("Erro ao criar produto:", error);
+    toast.error("Erro ao criar produto!");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4">

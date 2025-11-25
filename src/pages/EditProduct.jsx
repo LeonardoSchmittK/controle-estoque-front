@@ -60,6 +60,15 @@ function EditProduct() {
     setSubmitting(true)
     setMessage({ type: '', text: '' })
 
+    
+      const min = parseInt(formData.minQuantity);
+      const max = parseInt(formData.maxQuantity);
+
+      if (max < min) {
+        toast.error("A quantidade máxima não pode ser menor que a mínima!");
+        return;
+      }
+
     try {
       const response = await fetch(`${import.meta.env.VITE_BACK_END_API}/api/products/${id}`, {
         method: 'PUT',
