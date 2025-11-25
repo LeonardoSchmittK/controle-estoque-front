@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { FiTrendingDown } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
+import { FiTrendingUp } from 'react-icons/fi';
+import { MdBarChart } from 'react-icons/md';
+
 
 function Movements() {
   const [movements, setMovements] = useState([])
@@ -8,7 +13,7 @@ function Movements() {
   const [searchTerm, setSearchTerm] = useState('')
   const [sortDirection, setSortDirection] = useState('desc')
   
-  // Form state
+  
   const [formData, setFormData] = useState({
     productId: '',
     quantityMoved: '',
@@ -72,14 +77,14 @@ function Movements() {
         text: `Movimentação de ${formData.movementType === 'ENTRY' ? 'entrada' : 'saída'} registrada com sucesso!` 
       })
       
-      // Reset form
+     
       setFormData({
         productId: '',
         quantityMoved: '',
         movementType: ''
       })
 
-      // Refresh data
+      
       fetchData()
     } catch (error) {
       console.error("Erro ao criar movimentação:", error)
@@ -121,7 +126,7 @@ function Movements() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
       <div className="container mx-auto max-w-7xl">
         
-        {/* Header */}
+       
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-2">
             Movimentações de Estoque
@@ -131,7 +136,7 @@ function Movements() {
           </p>
         </div>
 
-        {/* Message Alert */}
+        
         {message.text && (
           <div className={`mb-6 p-4 rounded-xl ${
             message.type === 'success' 
@@ -142,12 +147,12 @@ function Movements() {
           </div>
         )}
 
-        {/* Create Movement Form */}
+        
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
           <h2 className="text-2xl font-bold text-white mb-4">Nova Movimentação</h2>
           
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* Product Select */}
+            
             <div>
               <label htmlFor="productId" className="block text-sm font-medium text-purple-200 mb-2">
                 Produto *
@@ -168,7 +173,7 @@ function Movements() {
               </select>
             </div>
 
-            {/* Movement Type */}
+           
             <div>
               <label htmlFor="movementType" className="block text-sm font-medium text-purple-200 mb-2">
                 Tipo *
@@ -181,12 +186,12 @@ function Movements() {
                 className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="">Selecione o tipo</option>
-                <option value="ENTRY">📈 Entrada</option>
-                <option value="EXIT">📉 Saída</option>
+                <option value="ENTRY"><FiTrendingUp /> Entrada</option>
+                <option value="EXIT"><FiTrendingDown /> Saída</option>
               </select>
             </div>
 
-            {/* Quantity */}
+            
             <div>
               <label htmlFor="quantityMoved" className="block text-sm font-medium text-purple-200 mb-2">
                 Quantidade *
@@ -203,7 +208,7 @@ function Movements() {
               />
             </div>
 
-            {/* Submit Button */}
+            
             <div className="flex items-end">
               <button
                 type="submit"
@@ -216,10 +221,10 @@ function Movements() {
           </form>
         </div>
 
-        {/* Search Bar */}
+        
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
           <label htmlFor="search" className="block text-sm font-medium text-purple-200 mb-2">
-            🔍 Pesquisar Movimentação
+            <FiSearch /> Pesquisar Movimentação
           </label>
           <input
             type="text"
@@ -234,7 +239,7 @@ function Movements() {
           </div>
         </div>
 
-        {/* Movements History */}
+       
         {loading ? (
           <div className="text-center text-purple-200 py-16">
             <p className="text-2xl">Carregando movimentações...</p>
@@ -242,7 +247,7 @@ function Movements() {
         ) : sortedMovements.length === 0 ? (
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
             <p className="text-2xl text-purple-200 mb-4">
-              {movements.length === 0 ? '📊 Nenhuma movimentação registrada' : '🔍 Nenhuma movimentação encontrada'}
+              {movements.length === 0 ? '<MdBarChart /> Nenhuma movimentação registrada' : '<FiSearch /> Nenhuma movimentação encontrada'}
             </p>
           </div>
         ) : (
@@ -283,11 +288,11 @@ function Movements() {
                       <td className="px-6 py-4 text-center">
                         {movement.movementType === 'ENTRY' ? (
                           <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm font-semibold">
-                            📈 Entrada
+                            <FiTrendingUp /> Entrada
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm font-semibold">
-                            📉 Saída
+                            <FiTrendingDown /> Saída
                           </span>
                         )}
                       </td>

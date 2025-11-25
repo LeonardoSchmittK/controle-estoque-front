@@ -47,9 +47,9 @@ function CreateCategory() {
     }
 
     try {
-      // Map Portuguese field names to English ones expected by the backend
+      
       const categoryData = {
-        id: Math.floor(Math.random() * 1000000), // Generate a random ID
+        id: Math.floor(Math.random() * 1000000), 
         name: result.data.nome,
         size: result.data.tamanho,
         packaging: result.data.embalagem

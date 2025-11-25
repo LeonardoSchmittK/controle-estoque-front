@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { z } from "zod"
+import { FiAlertTriangle } from 'react-icons/fi';
 
 const ProductSchema = z.object({
   nome: z.string().min(2, "Nome deve ter pelo menos 2 caracteres").max(80, "Nome deve ter no máximo 80 caracteres"),
@@ -29,7 +30,7 @@ function CreateProduct() {
   const [loadingCategories, setLoadingCategories] = useState(true)
   const [errors, setErrors] = useState({})
 
-  // Fetch categories on component mount
+ 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -71,7 +72,7 @@ function CreateProduct() {
     }
 
     try {
-      // Map form fields to backend DTO
+     
       const productData = {
         name: result.data.nome,
         unitPrice: parseFloat(result.data.preco),
@@ -119,7 +120,7 @@ function CreateProduct() {
             </div>
           ) : categories.length === 0 ? (
             <div className="text-center text-purple-200 py-8">
-              <p className="mb-4">⚠️ Nenhuma categoria encontrada!</p>
+              <p className="mb-4"><FiAlertTriangle /> Nenhuma categoria encontrada!</p>
               <p className="text-sm">Você precisa criar pelo menos uma categoria antes de adicionar produtos.</p>
               <button
                 onClick={() => navigate('/criar-categoria')}

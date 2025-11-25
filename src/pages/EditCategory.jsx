@@ -96,7 +96,7 @@ function EditCategory() {
 
         <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
           <div className="space-y-6">
-            {/* Nome */}
+            
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-purple-200 mb-2">
                 Nome da Categoria *
@@ -112,7 +112,7 @@ function EditCategory() {
               />
             </div>
 
-            {/* Tamanho */}
+            
             <div>
               <label htmlFor="size" className="block text-sm font-medium text-purple-200 mb-2">
                 Tamanho *
@@ -128,7 +128,7 @@ function EditCategory() {
               />
             </div>
 
-            {/* Embalagem */}
+            
             <div>
               <label htmlFor="packaging" className="block text-sm font-medium text-purple-200 mb-2">
                 Embalagem *
@@ -144,7 +144,7 @@ function EditCategory() {
               />
             </div>
 
-            {/* Botões */}
+            
             <div className="flex gap-4 pt-4">
               <button
                 type="button"

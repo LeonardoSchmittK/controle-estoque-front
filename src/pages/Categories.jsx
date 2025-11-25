@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ConfirmModal from '../components/ConfirmModal'
+import { FiTrash } from 'react-icons/fi';
+import { FiEdit } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
+import { FiPlus } from 'react-icons/fi';
 
 function Categories() {
   const navigate = useNavigate()
@@ -63,7 +67,7 @@ function Categories() {
         throw new Error('Erro ao excluir categoria')
       }
 
-      // Refresh data
+      
       fetchData()
       setDeleteModal({ isOpen: false, id: null, name: '', relatedProducts: 0 })
     } catch (error) {
@@ -86,7 +90,6 @@ function Categories() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
       <div className="container mx-auto max-w-6xl">
         
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-2">
             Gerenciar Categorias
@@ -98,14 +101,14 @@ function Categories() {
             onClick={() => navigate('/criar-categoria')}
             className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-3 px-8 rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:shadow-green-500/25 flex items-center gap-2 mx-auto"
           >
-            ➕ Nova Categoria
+            <FiPlus /> Nova Categoria
           </button>
         </div>
 
-        {/* Search Bar */}
+        
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
           <label htmlFor="search" className="block text-sm font-medium text-purple-200 mb-2">
-            🔍 Pesquisar Categoria
+            <FiSearch /> Pesquisar Categoria
           </label>
           <input
             type="text"
@@ -120,7 +123,7 @@ function Categories() {
           </div>
         </div>
 
-        {/* Categories List */}
+        
         {loading ? (
           <div className="text-center text-purple-200 py-16">
             <p className="text-2xl">Carregando categorias...</p>
@@ -178,14 +181,14 @@ function Categories() {
                             className="px-3 py-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 rounded-lg transition-all text-sm font-medium"
                             title="Editar categoria"
                           >
-                            ✏️ Editar
+                            <FiEdit /> Editar
                           </button>
                           <button
                             onClick={() => handleDelete(category)}
                             className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg transition-all text-sm font-medium"
                             title="Excluir categoria"
                           >
-                            🗑️ Excluir
+                            <FiTrash /> Excluir
                           </button>
                         </div>
                       </td>
@@ -198,7 +201,7 @@ function Categories() {
         )}
       </div>
 
-      {/* Delete Confirmation Modal */}
+      
       <ConfirmModal
         isOpen={deleteModal.isOpen}
         onClose={() => setDeleteModal({ isOpen: false, id: null, name: '', relatedProducts: 0 })}

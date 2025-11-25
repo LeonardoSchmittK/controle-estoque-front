@@ -118,7 +118,7 @@ function EditProduct() {
 
         <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
           <div className="space-y-6">
-            {/* Nome */}
+           
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-purple-200 mb-2">
                 Nome do Produto *
@@ -133,7 +133,7 @@ function EditProduct() {
               />
             </div>
 
-            {/* Categoria */}
+            
             <div>
               <label htmlFor="categoryId" className="block text-sm font-medium text-purple-200 mb-2">
                 Categoria *
@@ -154,7 +154,7 @@ function EditProduct() {
               </select>
             </div>
 
-            {/* Preço e Unidade */}
+            
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="unitPrice" className="block text-sm font-medium text-purple-200 mb-2">
@@ -186,7 +186,7 @@ function EditProduct() {
               </div>
             </div>
 
-            {/* Quantidades */}
+            
             <div className="grid grid-cols-3 gap-4">
               <div>
                 <label htmlFor="quantityInStock" className="block text-sm font-medium text-purple-200 mb-2">
@@ -232,7 +232,7 @@ function EditProduct() {
               </div>
             </div>
 
-            {/* Botões */}
+            
             <div className="flex gap-4 pt-4">
               <button
                 type="button"

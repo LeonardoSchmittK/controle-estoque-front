@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ConfirmModal from '../components/ConfirmModal'
+import { FiBarChart2 } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
+import { FiBox } from "react-icons/fi"
+import { FiPackage } from "react-icons/fi";
+import { FiAlertTriangle, FiTrendingUp } from "react-icons/fi";
+import { FiTrash2 } from "react-icons/fi";
+import { FiEdit2 } from "react-icons/fi";
+import { FaMedal } from "react-icons/fa";
+import { FiTrendingDown } from "react-icons/fi";
+import { FiCheckCircle } from "react-icons/fi";
+
 
 function Home() {
   const navigate = useNavigate()
@@ -12,12 +23,12 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [sortColumn, setSortColumn] = useState('name')
   const [sortDirection, setSortDirection] = useState('asc')
-  const [reportType, setReportType] = useState('list') // 'list', 'balance', 'lowStock', 'byCategory', 'ranking'
+  const [reportType, setReportType] = useState('list') 
   
-  // Modal state
+  
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
-    type: '', // 'product' or 'category'
+    type: '', 
     id: null,
     name: '',
     relatedProducts: 0
@@ -170,7 +181,7 @@ function Home() {
         throw new Error(`Erro ao excluir ${deleteModal.type === 'product' ? 'produto' : 'categoria'}`)
       }
 
-      // Refresh data
+      
       const [productsRes, categoriesRes, movementsRes] = await Promise.all([
         fetch(`${import.meta.env.VITE_BACK_END_API}/api/products`),
         fetch(`${import.meta.env.VITE_BACK_END_API}/api/categories`),
@@ -196,7 +207,7 @@ function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
       <div className="container mx-auto max-w-7xl">
         
-        {/* Header */}
+        
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-2">
             Controle de Estoque
@@ -206,10 +217,11 @@ function Home() {
           </p>
         </div>
 
-        {/* Report Type Selector */}
+       
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
           <label htmlFor="reportType" className="block text-sm font-medium text-purple-200 mb-2">
-            📊 Selecione o Tipo de Relatório
+           <FiBarChart2 /> Selecione o Tipo de Relatório
+
           </label>
           <select
             id="reportType"
@@ -233,13 +245,14 @@ function Home() {
           <>
             {reportType === 'list' ? (
               <>
-                {/* Filters */}
+               
                 <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                     <div>
                       <label htmlFor="search" className="block text-sm font-medium text-purple-200 mb-2">
-                        🔍 Pesquisar
+                        <FiSearch /> Pesquisar
+
                       </label>
                       <input
                         type="text"
@@ -251,10 +264,11 @@ function Home() {
                       />
                     </div>
 
-                    {/* Category Filter */}
+                    
                     <div>
                       <label htmlFor="category" className="block text-sm font-medium text-purple-200 mb-2">
-                        📦 Filtrar por Categoria
+                        <FiBox /> Filtrar por Categoria
+
                       </label>
                       <select
                         id="category"
@@ -280,7 +294,16 @@ function Home() {
                 {sortedProducts.length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                      {products.length === 0 ? '📦 Nenhum produto cadastrado' : '🔍 Nenhum produto encontrado'}
+                      {products.length === 0 ? (
+                        <>
+                          <FiPackage /> Nenhum produto cadastrado
+                        </>
+                      ) : (
+                        <>
+                          <FiSearch /> Nenhum produto encontrado
+                        </>
+                      )}
+
                     </p>
                     {products.length === 0 && (
                       <Link
@@ -391,11 +414,16 @@ function Home() {
                               <td className="px-6 py-4 text-white font-medium">
                                 {product.name}
                                 {isLowStock(product) && (
-                                  <span className="ml-2 text-red-400 text-xs">⚠️ Estoque Baixo</span>
-                                )}
-                                {isHighStock(product) && (
-                                  <span className="ml-2 text-orange-400 text-xs">📈 Estoque Alto</span>
-                                )}
+                                <span className="ml-2 text-red-400 text-xs flex items-center gap-1">
+                                  <FiAlertTriangle /> Estoque Baixo
+                                </span>
+                              )}
+                              {isHighStock(product) && (
+                                <span className="ml-2 text-orange-400 text-xs flex items-center gap-1">
+                                  <FiTrendingUp /> Estoque Alto
+                                </span>
+                              )}
+
                               </td>
                               <td className="px-6 py-4 text-purple-200">
                                 R$ {product.unitPrice.toFixed(2)}
@@ -422,17 +450,20 @@ function Home() {
                                 <div className="flex items-center justify-center gap-2">
                                   <button
                                     onClick={() => navigate(`/editar-produto/${product.id}`)}
-                                    className="px-3 py-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 rounded-lg transition-all text-sm font-medium"
+                                   className="px-3 py-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 rounded-lg transition-all text-sm font-medium flex items-center gap-2"
                                     title="Editar produto"
                                   >
-                                    ✏️ Editar
+                                    <FiEdit2 /> Editar
+
                                   </button>
                                   <button
                                     onClick={() => handleDeleteProduct(product)}
-                                    className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg transition-all text-sm font-medium"
-                                    title="Excluir produto"
+                                    className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg transition-all text-sm font-medium flex items-center gap-2"
+
+                                   title="Excluir produto"
                                   >
-                                    🗑️ Excluir
+                                    <FiTrash2 /> Excluir
+
                                   </button>
                                 </div>
                               </td>
@@ -446,11 +477,12 @@ function Home() {
               </>
             ) : reportType === 'balance' ? (
               <>
-                {/* Balance Report */}
+               
                 {products.length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                      📦 Nenhum produto cadastrado
+                     <FiBox /> Nenhum produto cadastrado
+
                     </p>
                     <Link
                       to="/criar-produto"
@@ -461,10 +493,10 @@ function Home() {
                   </div>
                 ) : (
                   <>
-                    {/* Search Bar for Balance Report */}
+                   
                     <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
                       <label htmlFor="balanceSearch" className="block text-sm font-medium text-purple-200 mb-2">
-                        🔍 Pesquisar
+                        <FiSearch /> Pesquisar
                       </label>
                       <input
                         type="text"
@@ -479,7 +511,7 @@ function Home() {
                       </div>
                     </div>
 
-                    {/* Summary Cards */}
+                    
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                       <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Produtos</div>
@@ -499,7 +531,7 @@ function Home() {
                       </div>
                     </div>
 
-                    {/* Balance Table */}
+                   
                     <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full">
@@ -604,11 +636,10 @@ function Home() {
               </>
             ) : reportType === 'lowStock' ? (
               <>
-                {/* Low Stock Report */}
-                {/* Search Bar for Low Stock Report */}
+                
                 <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
                   <label htmlFor="lowStockSearch" className="block text-sm font-medium text-purple-200 mb-2">
-                    🔍 Pesquisar
+                    <FiSearch /> Pesquisar
                   </label>
                   <input
                     type="text"
@@ -626,7 +657,7 @@ function Home() {
                 {sortedProducts.filter(p => isLowStock(p)).length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                      {products.length === 0 ? '📦 Nenhum produto cadastrado' : '✅ Nenhum produto abaixo da quantidade mínima'}
+                      {products.length === 0 ? '<FiBox /> Nenhum produto cadastrado' : '✅ Nenhum produto abaixo da quantidade mínima'}
                     </p>
                     {products.length === 0 && (
                       <Link
@@ -639,7 +670,7 @@ function Home() {
                   </div>
                 ) : (
                   <>
-                    {/* Alert Card */}
+                    
                     <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-lg rounded-2xl p-6 border border-red-400/30 shadow-2xl mb-6">
                       <div className="flex items-center gap-3">
                         <span className="text-4xl">⚠️</span>
@@ -652,7 +683,6 @@ function Home() {
                       </div>
                     </div>
 
-                    {/* Low Stock Table */}
                     <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full">
@@ -742,11 +772,10 @@ function Home() {
               </>
             ) : reportType === 'byCategory' ? (
               <>
-                {/* Products by Category Report */}
-                {/* Search Bar for Category Report */}
+                
                 <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
                   <label htmlFor="categorySearch" className="block text-sm font-medium text-purple-200 mb-2">
-                    🔍 Pesquisar
+                    <FiSearch /> Pesquisar
                   </label>
                   <input
                     type="text"
@@ -761,7 +790,7 @@ function Home() {
                 {categories.length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                      📦 Nenhuma categoria cadastrada
+                      <FiBox />  Nenhuma categoria cadastrada
                     </p>
                     <Link
                       to="/criar-categoria"
@@ -772,7 +801,7 @@ function Home() {
                   </div>
                 ) : (
                   <>
-                    {/* Summary Cards */}
+                    
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                       <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Categorias</div>
@@ -790,7 +819,7 @@ function Home() {
                       </div>
                     </div>
 
-                    {/* Category Table */}
+                    
                     <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full">
@@ -916,13 +945,12 @@ function Home() {
               </>
             ) : (
               <>
-                {/* Ranking Report */}
-                {/* Search and Filter Bar */}
+                
                 <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="rankingSearch" className="block text-sm font-medium text-purple-200 mb-2">
-                        🔍 Pesquisar
+                        <FiSearch /> Pesquisar
                       </label>
                       <input
                         type="text"
@@ -935,7 +963,7 @@ function Home() {
                     </div>
                     <div>
                       <label htmlFor="rankingCategory" className="block text-sm font-medium text-purple-200 mb-2">
-                        📦 Filtrar por Categoria
+                        <FiBox />  Filtrar por Categoria
                       </label>
                       <select
                         id="rankingCategory"
@@ -957,12 +985,12 @@ function Home() {
                 {movements.length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                      📊 Nenhuma movimentação registrada
+                      <FiBarChart2 /> Nenhuma movimentação registrada
                     </p>
                   </div>
                 ) : (
                   <>
-                    {/* Summary Cards */}
+                    
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                       <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Entradas</div>
@@ -982,13 +1010,13 @@ function Home() {
                       </div>
                     </div>
 
-                    {/* Rankings Grid */}
+                   
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {/* Top Entries Ranking */}
+                      
                       <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
                         <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 px-6 py-4 border-b border-white/20">
                           <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                            📈 Ranking de Entradas
+                            <FiTrendingUp /> Ranking de Entradas
                             {selectedCategory && <span className="text-sm text-purple-200">({categories.find(c => c.id === parseInt(selectedCategory))?.name})</span>}
                           </h3>
                         </div>
@@ -1028,7 +1056,16 @@ function Home() {
                                   .map((entry, index) => (
                                     <tr key={entry.product.id} className="hover:bg-white/5 transition-colors">
                                       <td className="px-6 py-3 text-white font-bold">
-                                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}º`}
+                                        {index === 0 ? (
+                                            <FaMedal className="text-yellow-400" />
+                                          ) : index === 1 ? (
+                                            <FaMedal className="text-gray-300" />
+                                          ) : index === 2 ? (
+                                            <FaMedal className="text-amber-700" />
+                                          ) : (
+                                            `${index + 1}º`
+                                          )}
+
                                       </td>
                                       <td className="px-6 py-3 text-white font-medium">{entry.product.name}</td>
                                       <td className="px-6 py-3 text-green-400 font-bold text-right">
@@ -1042,11 +1079,11 @@ function Home() {
                         </div>
                       </div>
 
-                      {/* Top Exits Ranking */}
+                      
                       <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
                         <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 px-6 py-4 border-b border-white/20">
                           <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                            📉 Ranking de Saídas
+                           <FiTrendingDown /> Ranking de Saídas
                             {selectedCategory && <span className="text-sm text-purple-200">({categories.find(c => c.id === parseInt(selectedCategory))?.name})</span>}
                           </h3>
                         </div>
@@ -1086,7 +1123,16 @@ function Home() {
                                   .map((exit, index) => (
                                     <tr key={exit.product.id} className="hover:bg-white/5 transition-colors">
                                       <td className="px-6 py-3 text-white font-bold">
-                                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}º`}
+                                        {index === 0 ? (
+                                          <FaMedal className="text-yellow-400" />
+                                        ) : index === 1 ? (
+                                          <FaMedal className="text-gray-300" />
+                                        ) : index === 2 ? (
+                                          <FaMedal className="text-amber-700" />
+                                        ) : (
+                                          `${index + 1}º`
+                                        )}
+
                                       </td>
                                       <td className="px-6 py-3 text-white font-medium">{exit.product.name}</td>
                                       <td className="px-6 py-3 text-red-400 font-bold text-right">
@@ -1108,7 +1154,7 @@ function Home() {
         )}
       </div>
 
-      {/* Delete Confirmation Modal */}
+      
       <ConfirmModal
         isOpen={deleteModal.isOpen}
         onClose={() => setDeleteModal({ isOpen: false, type: '', id: null, name: '', relatedProducts: 0 })}
