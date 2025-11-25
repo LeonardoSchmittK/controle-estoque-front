@@ -1,16 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ConfirmModal from '../components/ConfirmModal'
-import { FiBarChart2 } from "react-icons/fi";
-import { FiSearch } from "react-icons/fi";
-import { FiBox } from "react-icons/fi"
-import { FiPackage } from "react-icons/fi";
-import { FiAlertTriangle, FiTrendingUp } from "react-icons/fi";
-import { FiTrash2 } from "react-icons/fi";
-import { FiEdit2 } from "react-icons/fi";
-import { FaMedal } from "react-icons/fa";
-import { FiTrendingDown } from "react-icons/fi";
-import { FiCheckCircle } from "react-icons/fi";
+import { FiBarChart2,  FiSearch, FiBox, FiPackage,  FiAlertTriangle, FiTrendingUp, FiTrash2
+         ,FiEdit2,  FaMedal, FiTrendingDown, FiCheckCircle  } from "react-icons/fi";
+
 
 
 function Home() {

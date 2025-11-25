@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { FiTrendingDown } from 'react-icons/fi';
-import { FiSearch } from 'react-icons/fi';
-import { FiTrendingUp } from 'react-icons/fi';
-import { MdBarChart } from 'react-icons/md';
+import { FiTrendingDown, FiSearch, FiTrendingUp, MdBarChart } from 'react-icons/fi';
+
 
 
 function Movements() {
