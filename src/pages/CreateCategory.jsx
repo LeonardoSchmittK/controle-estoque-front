@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { z } from "zod"
+import toast from "react-hot-toast";
 
 const CategorySchema = z.object({
   nome: z.string().min(1, "Campo obrigatório"),
@@ -60,7 +61,6 @@ function CreateCategory() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(categoryData)
       })
 
       if (!response.ok) {
@@ -69,11 +69,11 @@ function CreateCategory() {
 
       const data = await response.json()
       console.log("Categoria criada:", data)
-      alert("Categoria criada com sucesso!")
+      toast.success("Categoria criada com sucesso!")
       navigate("/")
     } catch (error) {
       console.error("Erro ao criar categoria:", error)
-      alert("Erro ao criar categoria. Tente novamente.")
+      toast.error("Erro ao criar categoria. Tente novamente.")
     }
   }
 

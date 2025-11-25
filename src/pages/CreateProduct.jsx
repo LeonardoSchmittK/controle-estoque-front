@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { z } from "zod"
 import { FiAlertTriangle } from 'react-icons/fi';
+import toast from "react-hot-toast";
 
 const ProductSchema = z.object({
   nome: z.string().min(2, "Nome deve ter pelo menos 2 caracteres").max(80, "Nome deve ter no máximo 80 caracteres"),
@@ -97,11 +98,11 @@ function CreateProduct() {
 
       const data = await response.json()
       console.log("Produto criado:", data)
-      alert("Produto criado com sucesso!")
+      toast.success("Produto criado!");
       navigate("/")
     } catch (error) {
       console.error("Erro ao criar produto:", error)
-      alert("Erro ao criar produto. Tente novamente.")
+      toast.error("Erro ao criar produto!");
     }
   }
 
