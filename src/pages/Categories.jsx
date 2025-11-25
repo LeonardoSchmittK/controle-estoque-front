@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ConfirmModal from '../components/ConfirmModal'
-import { FiTrash,  FiEdit, FiSearch, FiPlus } from 'react-icons/fi';
-
+import { FiTrash } from 'react-icons/fi';
+import { FiEdit } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
+import { FiPlus } from 'react-icons/fi';
 
 function Categories() {
   const navigate = useNavigate()
