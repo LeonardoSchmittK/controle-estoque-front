@@ -8,11 +8,15 @@ Projeto React com Vite e Zustand para gerenciamento de estoque.
 - **Vite 6.0** - Build tool e dev server ultra-rápido
 - **Zustand 5.0** - Gerenciamento de estado simples e eficiente
 
-## 📦 Instalação
+## 📦 Instalação das dependências
 
 ```bash
-npm install
+npm install -y
 ```
+
+Lembre-se de adicionar a url do back no .env
+
+VITE_BACK_END_API=[CHAVE]
 
 ## 🏃 Executar o Projeto
 
