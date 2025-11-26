@@ -9,14 +9,14 @@ function Navbar() {
     "relative px-4 py-2 rounded-lg font-medium transition-all text-sm"
 
   const linkHoverClasses =
-    "hover:bg-gray-200 hover:text-black"
+    "hover:bg-gray-500 hover:text-white"
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-gray-500 border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="group">
-            <span className="text-xl font-bold text-gray-900">Controle de Estoque</span>
+            <span className="text-xl font-bold text-gray-300">Controle de Estoque</span>
           </Link>
 
           <div className="flex items-center space-x-1">
@@ -31,9 +31,7 @@ function Navbar() {
                 key={item.path}
                 to={item.path}
                 className={`${linkBaseClasses} ${
-                  isActive(item.path)
-                    ? "text-black bg-gray-500"
-                    : `text-gray-600 ${linkHoverClasses}`
+                 `text-gray-300 ${linkHoverClasses}`
                 }`}
               >
                 {item.label}
@@ -41,7 +39,7 @@ function Navbar() {
                 {/* underline animado */}
                 <span
                   className={`
-                    absolute left-1/2 -bottom-1 h-[2px] w-0 bg-black 
+                    absolute left-1/2 -bottom-1 h-[2px] w-0 bg-sky-500 
                     transition-all duration-300
                     ${isActive(item.path)
                       ? "w-3/4 -translate-x-1/2"

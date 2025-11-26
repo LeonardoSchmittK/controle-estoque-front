@@ -101,14 +101,14 @@ function EditProduct() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 bg-gray-50 to-slate-900 flex items-center justify-center">
         <p className="text-2xl text-purple-200">Carregando produto...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 bg-gray-50 to-slate-900 py-8 px-4">
       <div className="container mx-auto max-w-2xl">
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-2">Editar Produto</h1>
@@ -253,7 +253,7 @@ function EditProduct() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-gradient-to-r from-sky-500 to-sky-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-sky-600 hover:to-sky-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Salvando...' : 'Salvar Alterações'}
               </button>

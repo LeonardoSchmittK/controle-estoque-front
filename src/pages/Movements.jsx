@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import { FiTrendingDown } from 'react-icons/fi';
 import { FiSearch } from 'react-icons/fi';
 import { FiTrendingUp } from 'react-icons/fi';
-import { MdBarChart } from 'react-icons/md';
-
 
 function Movements() {
   const [movements, setMovements] = useState([])
@@ -123,7 +121,7 @@ function Movements() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 bg-grey-500 to-slate-900 py-8 px-4">
       <div className="container mx-auto max-w-7xl">
         
        
@@ -131,7 +129,7 @@ function Movements() {
           <h1 className="text-5xl font-bold text-white mb-2">
             Movimentações de Estoque
           </h1>
-          <p className="text-xl text-purple-200">
+          <p className="text-xl text-sky-200">
             Registre entradas e saídas de produtos
           </p>
         </div>
@@ -154,7 +152,7 @@ function Movements() {
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4">
             
             <div>
-              <label htmlFor="productId" className="block text-sm font-medium text-purple-200 mb-2">
+              <label htmlFor="productId" className="block text-sm font-medium text-sky-200 mb-2">
                 Produto *
               </label>
               <select
@@ -162,7 +160,7 @@ function Movements() {
                 value={formData.productId}
                 onChange={(e) => setFormData({ ...formData, productId: e.target.value })}
                 required
-                className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
               >
                 <option value="">Selecione um produto</option>
                 {products.map(product => (
@@ -175,7 +173,7 @@ function Movements() {
 
            
             <div>
-              <label htmlFor="movementType" className="block text-sm font-medium text-purple-200 mb-2">
+              <label htmlFor="movementType" className="block text-sm font-medium text-sky-200 mb-2">
                 Tipo *
               </label>
               <select
@@ -183,7 +181,7 @@ function Movements() {
                 value={formData.movementType}
                 onChange={(e) => setFormData({ ...formData, movementType: e.target.value })}
                 required
-                className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
               >
                 <option value="">Selecione o tipo</option>
                 <option value="ENTRY"><FiTrendingUp /> Entrada</option>
@@ -193,7 +191,7 @@ function Movements() {
 
             
             <div>
-              <label htmlFor="quantityMoved" className="block text-sm font-medium text-purple-200 mb-2">
+              <label htmlFor="quantityMoved" className="block text-sm font-medium text-sky-200 mb-2">
                 Quantidade *
               </label>
               <input
@@ -204,7 +202,7 @@ function Movements() {
                 required
                 min="1"
                 placeholder="Ex: 10"
-                className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
               />
             </div>
 
@@ -213,7 +211,7 @@ function Movements() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-sky-500 to-sky-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-sky-600 hover:to-sky-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Registrando...' : 'Registrar'}
               </button>
@@ -223,7 +221,7 @@ function Movements() {
 
         
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl mb-6">
-          <label htmlFor="search" className="block text-sm font-medium text-purple-200 mb-2">
+          <label htmlFor="search" className="block text-sm font-medium mb-2 text-white">
             <FiSearch /> Pesquisar Movimentação
           </label>
           <input
@@ -232,22 +230,22 @@ function Movements() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Pesquisar por produto..."
-            className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-xl text-white placeholder-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
           />
-          <div className="mt-4 text-purple-200 text-sm">
+          <div className="mt-4 text-sky-200 text-sm">
             Mostrando {sortedMovements.length} de {movements.length} movimentações
           </div>
         </div>
 
        
         {loading ? (
-          <div className="text-center text-purple-200 py-16">
+          <div className="text-center text-sky-200 py-16">
             <p className="text-2xl">Carregando movimentações...</p>
           </div>
         ) : sortedMovements.length === 0 ? (
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
-            <p className="text-2xl text-purple-200 mb-4">
-              {movements.length === 0 ? '<MdBarChart /> Nenhuma movimentação registrada' : '<FiSearch /> Nenhuma movimentação encontrada'}
+            <p className="text-2xl text-sky-200 mb-4">
+            Nenhuma movimentação encontrada
             </p>
           </div>
         ) : (
@@ -258,20 +256,20 @@ function Movements() {
                   <tr>
                     <th 
                       onClick={() => setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc')}
-                      className="px-6 py-4 text-left text-sm font-semibold text-purple-200 cursor-pointer hover:bg-white/10 transition-colors"
+                      className="px-6 py-4 text-left text-sm font-semibold text-sky-200 cursor-pointer hover:bg-white/10 transition-colors"
                     >
                       <div className="flex items-center gap-2">
                         Data/Hora
                         <span>{sortDirection === 'desc' ? '↓' : '↑'}</span>
                       </div>
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-purple-200">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-sky-100">
                       Produto
                     </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-purple-200">
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-sky-100">
                       Tipo
                     </th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-purple-200">
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-sky-100">
                       Quantidade
                     </th>
                   </tr>
@@ -279,7 +277,7 @@ function Movements() {
                 <tbody className="divide-y divide-white/10">
                   {sortedMovements.map(movement => (
                     <tr key={movement.id} className="hover:bg-white/5 transition-colors">
-                      <td className="px-6 py-4 text-purple-200">
+                      <td className="px-6 py-4 text-sky-100">
                         {formatDate(movement.movementDate)}
                       </td>
                       <td className="px-6 py-4 text-white font-medium">

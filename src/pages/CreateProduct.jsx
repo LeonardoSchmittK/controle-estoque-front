@@ -111,7 +111,7 @@ function CreateProduct() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 bg-gray-50 to-slate-900 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Criar Produto</h1>
@@ -125,11 +125,14 @@ function CreateProduct() {
             </div>
           ) : categories.length === 0 ? (
             <div className="text-center text-purple-200 py-8">
-              <p className="mb-4"><FiAlertTriangle /> Nenhuma categoria encontrada!</p>
-              <p className="text-sm">Você precisa criar pelo menos uma categoria antes de adicionar produtos.</p>
+               <FiAlertTriangle size={24} className="mb-2 mx-auto" />
+              <p className="mb-4 text-center">Nenhuma categoria encontrada!</p>
+              <p className="text-sm text-center">
+                Você precisa criar pelo menos uma categoria antes de adicionar produtos.
+              </p>
               <button
                 onClick={() => navigate('/criar-categoria')}
-                className="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-2 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
+                className="mt-4 bg-gradient-to-r from-sky-500 to-sky-500 text-white font-semibold py-2 px-6 rounded-xl hover:from-sky-600 hover:to-sky-600 transition-all"
               >
                 Criar Categoria
               </button>
@@ -270,7 +273,7 @@ function CreateProduct() {
               <div className="pt-4 text-center">
                 <button
                   type="submit"
-                  className="w-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all transform hover:scale-105"
+                  className="w-1/2 bg-gradient-to-r from-sky-500 to-sky-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-sky-600 hover:to-sky-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                 >
                   Criar Produto
                 </button>

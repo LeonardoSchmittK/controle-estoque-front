@@ -87,7 +87,7 @@ function Categories() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 bg-gray-50 to-slate-900 py-8 px-4">
       <div className="container mx-auto max-w-6xl">
         
         <div className="text-center mb-8">
@@ -99,7 +99,7 @@ function Categories() {
           </p>
           <button
             onClick={() => navigate('/criar-categoria')}
-            className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-3 px-8 rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:shadow-green-500/25 flex items-center gap-2 mx-auto"
+            className="bg-gradient-to-r from-sky-500 to-sky-600 text-white font-bold py-3 px-8 rounded-xl hover:from-sky-600 hover:to-sky-600 transition-all shadow-lg hover:shadow-green-500/25 flex items-center gap-2 mx-auto"
           >
             <FiPlus /> Nova Categoria
           </button>
@@ -131,7 +131,7 @@ function Categories() {
         ) : filteredCategories.length === 0 ? (
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
             <p className="text-2xl text-purple-200 mb-4">
-              {categories.length === 0 ? '📦 Nenhuma categoria cadastrada' : '🔍 Nenhuma categoria encontrada'}
+              {categories.length === 0 ? 'Nenhuma categoria cadastrada' : 'Nenhuma categoria encontrada'}
             </p>
           </div>
         ) : (
@@ -170,7 +170,7 @@ function Categories() {
                         {category.packaging}
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span className="inline-flex items-center px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold">
+                        <span className="inline-flex items-center px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-semibold">
                           {getProductCount(category.id)} produto(s)
                         </span>
                       </td>
@@ -209,7 +209,7 @@ function Categories() {
         title="Excluir Categoria?"
         message={
           deleteModal.relatedProducts > 0
-            ? `Tem certeza que deseja excluir a categoria "${deleteModal.name}"?\n\n⚠️ ATENÇÃO: Esta ação irá excluir:\n• ${deleteModal.relatedProducts} produto(s) relacionado(s)\n• Todas as movimentações desses produtos\n\nEsta ação não pode ser desfeita!`
+            ? `Tem certeza que deseja excluir a categoria "${deleteModal.name}"?\n\nATENÇÃO: Esta ação irá excluir:\n• ${deleteModal.relatedProducts} produto(s) relacionado(s)\n• Todas as movimentações desses produtos\n\nEsta ação não pode ser desfeita!`
             : `Tem certeza que deseja excluir a categoria "${deleteModal.name}"?\n\nEsta ação não pode ser desfeita!`
         }
         type="danger"

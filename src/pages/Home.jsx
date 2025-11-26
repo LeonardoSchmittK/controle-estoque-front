@@ -204,7 +204,7 @@ function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 bg-gray-50 to-slate-900 py-8 px-4">
       <div className="container mx-auto max-w-7xl">
         
         
@@ -296,11 +296,11 @@ function Home() {
                     <p className="text-2xl text-purple-200 mb-4">
                       {products.length === 0 ? (
                         <>
-                          <FiPackage /> Nenhum produto cadastrado
+                           Nenhum produto cadastrado
                         </>
                       ) : (
                         <>
-                          <FiSearch /> Nenhum produto encontrado
+                           Nenhum produto encontrado
                         </>
                       )}
 
@@ -308,7 +308,7 @@ function Home() {
                     {products.length === 0 && (
                       <Link
                         to="/criar-produto"
-                        className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
+                        className="inline-block mt-4 bg-gradient-to-r from-sky-500 to-sky-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-sky-600 hover:to-sky-600 transition-all"
                       >
                         Criar Primeiro Produto
                       </Link>
@@ -481,12 +481,12 @@ function Home() {
                 {products.length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                     <FiBox /> Nenhum produto cadastrado
+                     Nenhum produto cadastrado
 
                     </p>
                     <Link
                       to="/criar-produto"
-                      className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
+                      className="inline-block mt-4 bg-gradient-to-r from-sky-500 to-sky-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-sky-600 hover:to-sky-600 transition-all"
                     >
                       Criar Primeiro Produto
                     </Link>
@@ -513,17 +513,17 @@ function Home() {
 
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                      <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-gradient-to-br from-blue-200/20 to-pink-blue/20  backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Produtos</div>
                         <div className="text-white text-3xl font-bold">{products.length}</div>
                       </div>
-                      <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-gradient-to-br from-blue-200/20 to-pink-blue/20  backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Itens em Estoque</div>
                         <div className="text-white text-3xl font-bold">
                           {products.reduce((sum, p) => sum + p.quantityInStock, 0)}
                         </div>
                       </div>
-                      <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-gradient-to-br from-blue-200/20 to-pink-blue/20  backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Valor Total do Estoque</div>
                         <div className="text-white text-3xl font-bold">
                           R$ {products.reduce((sum, p) => sum + (p.unitPrice * p.quantityInStock), 0).toFixed(2)}
@@ -618,7 +618,7 @@ function Home() {
                               )
                             })}
                           </tbody>
-                          <tfoot className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-t-2 border-purple-400">
+                          <tfoot className="bg-white/5">
                             <tr>
                               <td colSpan="4" className="px-6 py-4 text-white font-bold text-right">
                                 VALOR TOTAL DO ESTOQUE:
@@ -657,12 +657,12 @@ function Home() {
                 {sortedProducts.filter(p => isLowStock(p)).length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                      {products.length === 0 ? '<FiBox /> Nenhum produto cadastrado' : '✅ Nenhum produto abaixo da quantidade mínima'}
+                      {products.length === 0 ? 'Nenhum produto cadastrado' : 'Nenhum produto abaixo da quantidade mínima'}
                     </p>
                     {products.length === 0 && (
                       <Link
                         to="/criar-produto"
-                        className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
+                        className="inline-block mt-4 bg-gradient-to-r from-sky-500 to-sky-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-sky-600 hover:to-sky-600 transition-all"
                       >
                         Criar Primeiro Produto
                       </Link>
@@ -671,9 +671,9 @@ function Home() {
                 ) : (
                   <>
                     
-                    <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-lg rounded-2xl p-6 border border-red-400/30 shadow-2xl mb-6">
+                    <div className="bg-gradient-to-r from-red-500/20 to-red-500/20 backdrop-blur-lg rounded-2xl p-4 border-red-400/30 shadow-2xl mb-6">
                       <div className="flex items-center gap-3">
-                        <span className="text-4xl">⚠️</span>
+                        <span className="text-4xl"><FiAlertTriangle size={24} color="yellow" /></span>
                         <div>
                           <h3 className="text-white text-xl font-bold">Atenção: Estoque Baixo</h3>
                           <p className="text-red-200">
@@ -744,7 +744,6 @@ function Home() {
                                 <tr key={product.id} className="hover:bg-white/5 transition-colors bg-red-500/10">
                                   <td className="px-6 py-4 text-white font-medium">
                                     <div className="flex items-center gap-2">
-                                      <span className="text-red-400">⚠️</span>
                                       {product.name}
                                     </div>
                                   </td>
@@ -790,11 +789,11 @@ function Home() {
                 {categories.length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                      <FiBox />  Nenhuma categoria cadastrada
+                      Nenhuma categoria cadastrada
                     </p>
                     <Link
                       to="/criar-categoria"
-                      className="inline-block mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all"
+                      className="inline-block mt-4 bg-gradient-to-r from-sky-500 to-sky-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-sky-600 hover:to-sky-600 transition-all"
                     >
                       Criar Primeira Categoria
                     </Link>
@@ -803,15 +802,15 @@ function Home() {
                   <>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                      <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-gradient-to-br from-blue-200/20 to-pink-blue/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Categorias</div>
                         <div className="text-white text-3xl font-bold">{categories.length}</div>
                       </div>
-                      <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-gradient-to-br from-blue-200/20 to-pink-blue/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Produtos</div>
                         <div className="text-white text-3xl font-bold">{products.length}</div>
                       </div>
-                      <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-gradient-to-br from-blue-200/20 to-pink-blue/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Média por Categoria</div>
                         <div className="text-white text-3xl font-bold">
                           {categories.length > 0 ? (products.length / categories.length).toFixed(1) : 0}
@@ -921,10 +920,10 @@ function Home() {
                                 )
                               })}
                           </tbody>
-                          <tfoot className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-t-2 border-purple-400">
+                          <tfoot className=" bg-white/5">
                             <tr>
                               <td colSpan="3" className="px-6 py-4 text-white font-bold text-right">
-                                TOTAIS:
+                                Totais:
                               </td>
                               <td className="px-6 py-4 text-white font-bold text-right">
                                 {products.length}
@@ -985,26 +984,26 @@ function Home() {
                 {movements.length === 0 ? (
                   <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-12 border border-white/20 shadow-2xl text-center">
                     <p className="text-2xl text-purple-200 mb-4">
-                      <FiBarChart2 /> Nenhuma movimentação registrada
+                      Nenhuma movimentação registrada
                     </p>
                   </div>
                 ) : (
                   <>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                      <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Entradas</div>
                         <div className="text-white text-3xl font-bold">
                           {movements.filter(m => m.movementType === 'ENTRY').reduce((sum, m) => sum + m.quantityMoved, 0)}
                         </div>
                       </div>
-                      <div className="bg-gradient-to-br from-red-500/20 to-orange-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-white/10 rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Saídas</div>
                         <div className="text-white text-3xl font-bold">
                           {movements.filter(m => m.movementType === 'EXIT').reduce((sum, m) => sum + m.quantityMoved, 0)}
                         </div>
                       </div>
-                      <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
+                      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <div className="text-purple-200 text-sm mb-2">Total de Movimentações</div>
                         <div className="text-white text-3xl font-bold">{movements.length}</div>
                       </div>
@@ -1162,7 +1161,7 @@ function Home() {
         title={`Excluir ${deleteModal.type === 'product' ? 'Produto' : 'Categoria'}?`}
         message={
           deleteModal.type === 'category' && deleteModal.relatedProducts > 0
-            ? `Tem certeza que deseja excluir a categoria "${deleteModal.name}"?\n\n⚠️ ATENÇÃO: Esta ação irá excluir:\n• ${deleteModal.relatedProducts} produto(s) relacionado(s)\n• Todas as movimentações desses produtos\n\nEsta ação não pode ser desfeita!`
+            ? `Tem certeza que deseja excluir a categoria "${deleteModal.name}"?\n\nATENÇÃO: Esta ação irá excluir:\n• ${deleteModal.relatedProducts} produto(s) relacionado(s)\n• Todas as movimentações desses produtos\n\nEsta ação não pode ser desfeita!`
             : `Tem certeza que deseja excluir "${deleteModal.name}"?\n\nEsta ação não pode ser desfeita!`
         }
         type="danger"
