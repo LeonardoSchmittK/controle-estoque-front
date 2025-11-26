@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 A3_UC*
+.env
+node_modules
+./node_modules
+package-lock.json
+./package-lock.json
+env
+.env*
