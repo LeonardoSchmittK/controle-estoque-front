@@ -15,8 +15,7 @@ function ConfirmModal({
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-gray-500 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-200 animate-fadeIn">
-        
-        {/* Header */}
+
         <div className="flex items-start gap-4 mb-6">
           <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center">
             <span className="text-2xl"><FiAlertTriangle color="yellow"/></span>
@@ -27,10 +26,10 @@ function ConfirmModal({
           </div>
         </div>
 
-        {/* Actions */}
+      
         <div className="flex gap-3 mt-8">
           
-          {/* Cancelar */}
+        
           <button
             onClick={onClose}
             className="flex-1 px-5 py-3 text-white font-semibold rounded-xl transition-all duration-200"
@@ -38,7 +37,7 @@ function ConfirmModal({
             {cancelText}
           </button>
 
-          {/* Confirmar - CINZA elegante */}
+          
           <button
             onClick={onConfirm}
             className="flex-1 px-5 py-3 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-xl transition-all duration-200 shadow-md"
