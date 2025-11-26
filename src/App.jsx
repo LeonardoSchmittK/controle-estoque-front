@@ -9,15 +9,12 @@ import Categories from './pages/Categories'
 import Movements from './pages/Movements'
 import './App.css'
 
-// 🔥 IMPORT AQUI
 import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
     <div className="App">
-      {/* 🔥 TOASTER AQUI */}
       <Toaster position="top-center" />
-
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
